@@ -9,8 +9,12 @@ class Token {
 		tag = t
 	}
 
+	init(withASCII str:String) {
+		tag = str.unicodeScalarCodePoint
+	}
+
 	func toString() -> String {
-		return "\(tag)"
+		return tag.stringFromUnicodeScalarCodePoint
 	}
 
 }
