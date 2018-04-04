@@ -18,3 +18,14 @@ class Token {
 	}
 
 }
+
+extension Token : Hashable, Equatable {
+	var hashValue: Int {
+		return tag
+	}
+}
+
+func ==(l:Token, r:Token) -> Bool{
+	return l.tag == r.tag
+}
+

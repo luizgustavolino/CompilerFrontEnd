@@ -12,6 +12,7 @@ class Word : Token {
 	static let minus 	= Word(withLexeme: "minus", tag: Tag.MINUS)
 	static let True 	= Word(withLexeme: "true", tag: Tag.TRUE)
 	static let False 	= Word(withLexeme: "false", tag: Tag.FALSE)
+	static let temp 	= Word(withLexeme: "t", tag: Tag.TEMP)
 	
 	let lexeme:String
 

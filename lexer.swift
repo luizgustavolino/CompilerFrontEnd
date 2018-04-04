@@ -25,7 +25,7 @@ class Lexer {
 		reserve( Type.Float )
 
 		// testes
-		programInput = " 6.9 foo bar ".map { String($0) }
+		programInput = " 6.9 foo while ".map { String($0) }
 		print(scan().toString())
 		print(scan().toString())
 		print(scan().toString())
