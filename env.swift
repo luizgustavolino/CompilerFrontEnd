@@ -3,10 +3,14 @@
 
 class Env {
 	
+	// Link entre tokens e o Parser, na geração 
+	// da árvore sintática
 	var table:[Token:Id] = [:]
+
+	// Aponta para um escopo mais acima
 	let prev:Env?
 
-	init(withPrev n:Env) {
+	init(withPrev n:Env?) {
 		prev = n
 	}
 
@@ -15,6 +19,12 @@ class Env {
 	}
 
 	func get(_ w:Token) -> Id? {
+
+		// Busca no escopo local
+		// se não encontra procura
+		// recursivamente nos
+		// escopos prévios
+
 		if let found = table[w] {
 			return found
 		}

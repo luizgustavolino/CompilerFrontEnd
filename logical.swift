@@ -6,6 +6,8 @@ class Logical : Expr {
 	let expr1:Expr
 	let expr2:Expr
 
+	// true && false
+	// (Word("&&"), Expr(Type.Bool(true)), Expr(Type.Bool(false)))
 	init(withToken tok:Token, _ x1:Expr, _ x2:Expr) {
 
 		expr1 = x1
@@ -27,19 +29,32 @@ class Logical : Expr {
 		}
 	}
 
+
+	// Reduz para uma Expr que caiba à direita
+	// da notação de 3 endereços
 	override func gen() -> Expr {
 
 		let f = newlabel()
 		let a = newlabel()
 		let temp = Temp(withType: type)
 
-		jumping(0, f)
+		//  IFFALSE self GOTO Lf
+		//  t3 = true 
+		//  goto La
+		// Lf:
+		//  t3 = false 
+		// La:
+		// 
+		// (continua...)
+
+		jumping(0, f) 
 
 		emit("\(temp.toString()) = true")
 		emit("goto L\(a)")
-		emitlabel(f)
 
+		emitlabel(f)
 		emit("\(temp.toString()) = false")
+
 		emitlabel(a)
 
 		return temp

@@ -5,6 +5,9 @@ class Unary : Op {
 	
 	let expr:Expr
 
+
+	// Tratamento do sinal de "-" nos números 
+	// negativos 
 	init(withToken tok:Token, _ x:Expr) {
 
 		expr = x
@@ -16,6 +19,11 @@ class Unary : Op {
 		}
 	}
 
+	// exemplo:
+	//   -(3 + 5)
+	// gera:
+	//   t2 = 3 + 5
+	//   -t2
 	override func gen() -> Expr {
 		return Unary(withToken: op, expr.reduce())
 	}
