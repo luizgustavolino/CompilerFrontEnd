@@ -4,10 +4,10 @@
 class Type : Word {
 
 	// Declarando os tipos primitivos
-	static let `Int` = Type(withLexeme: "int", tag: Tag.BASIC, width:4)
+	static let `Int`   = Type(withLexeme: "int", tag: Tag.BASIC, width:4)
 	static let `Float` = Type(withLexeme: "float", tag: Tag.BASIC, width:8)
-	static let Char = Type(withLexeme: "char", tag: Tag.BASIC, width:1)
-	static let `Bool` = Type(withLexeme: "bool", tag: Tag.BASIC, width:1)
+	static let `Char`  = Type(withLexeme: "char", tag: Tag.BASIC, width:1)
+	static let `Bool`  = Type(withLexeme: "bool", tag: Tag.BASIC, width:1)
 
 	let width:Int
 
@@ -39,7 +39,7 @@ class Type : Word {
 		switch (p1.lexeme, p2.lexeme) {
 			case ("float", _), (_, "float"): return Type.Float
 			case ("int", _), (_, "int"): return Type.Int
-			default: return Type.Chars
+			default: return Type.Char
 		}
 
 	}

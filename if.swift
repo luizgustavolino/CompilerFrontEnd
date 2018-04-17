@@ -22,8 +22,6 @@ class If : Stmt {
 		//  # Quando a != 0
 		//  IFFALSE expr.ts() goto a
 		// label: 
-		//  
-
 
 		let label = newlabel()
 		expr.jumping(0, a)

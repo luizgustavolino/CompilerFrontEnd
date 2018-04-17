@@ -11,6 +11,7 @@ class Or : Logical {
 	override func jumping(_ t:Int,_ f:Int) {
 
 		// IF self GOTO label
+		// IF self GOTO t 
 
 		let label = t != 0 ? t : newlabel()
 
