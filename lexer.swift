@@ -56,8 +56,10 @@ class Lexer {
 		if programInput.isEmpty {
 			throw Errors.eof
 		}
-
+		
+		print("lendo \(peek)")
 		peek = programInput.removeFirst()
+
 	}
 
 	// Além de puxar o próximo char do buffer
@@ -84,7 +86,7 @@ class Lexer {
 		var keepReading = true
 		while (keepReading) {
 			switch peek {
-				case "", "\t":
+				case "", " ", "\t":
 					try readch()
 				case "\n":
 					Lexer.line += 1

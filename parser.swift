@@ -78,7 +78,7 @@ class Parser {
 
 			let p = try type()
 			guard let tok = look as? Word else{
-				fatalError("look is not a word")
+				fatalError("look is not a word: \(look!.toString())")
 			}
 
 			try match(Tag.ID)
