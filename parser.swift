@@ -52,14 +52,15 @@ class Parser {
 
 		let begin = s.newlabel()
 		let after = s.newlabel()
-
+        
+        print("\n")
 		s.emitlabel(begin)
 		s.gen(begin, after)
 		s.emitlabel(after)
 	}
 
 	func block() throws -> Stmt{
-
+        
 		try match("{")
 		let savedEnv = top
 		top = Env(withPrev: top)
@@ -77,6 +78,7 @@ class Parser {
 		while look?.tag == Tag.BASIC {
 
 			let p = try type()
+            
 			guard let tok = look as? Word else{
 				fatalError("look is not a word: \(look!.toString())")
 			}
@@ -129,7 +131,6 @@ class Parser {
 	func stmt() throws -> Stmt {
 		
 		let x:Expr?
-		//let s:Stmt?
 		let s1:Stmt?
 		let s2:Stmt?
 		let savedStmt:Stmt?
@@ -187,6 +188,7 @@ class Parser {
 				x = try bool() 
 				try match(")")
 				try match(";")
+                
 				try doNode.set(s1!, x!)
 
 				Stmt.Enclosing = savedStmt!
@@ -202,7 +204,7 @@ class Parser {
 				return try block()
 
 			default:
-				return Stmt.null
+				return try assign()
 		}
 	}
 

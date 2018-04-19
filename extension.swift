@@ -25,11 +25,11 @@ extension String {
     	return self.isLetter || self.isDigit
     }
 
-
 }
 
 extension Int {
-	var stringFromUnicodeScalarCodePoint:String {
+    var stringFromUnicodeScalarCodePoint:String {
+        if self > 255 { return "@" }
 		return String(UnicodeScalar(UInt8(self)))
 	}
 }

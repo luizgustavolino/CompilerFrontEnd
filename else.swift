@@ -16,7 +16,7 @@ class Else : Stmt {
 		}
 	}
 
-	override func gen(_ a:Int, _ b:Int) {
+	override func gen(_ b:Int, _ a:Int) {
 		let label1 = newlabel()
 		let label2 = newlabel()
 		

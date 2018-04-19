@@ -35,6 +35,15 @@ extension Token : Hashable, Equatable {
 // Quando comparando tokens, utilizamos 
 // a tag para saber se são iguais
 func ==(l:Token, r:Token) -> Bool{
+    
+    if let tl = l as? Type, let tr = r as? Type {
+        return tl.tag == tr.tag
+    }
+    
+    if let wl = l as? Word, let wr = r as? Word {
+        return wl.lexeme == wr.lexeme
+    }
+    
 	return l.tag == r.tag
 }
 

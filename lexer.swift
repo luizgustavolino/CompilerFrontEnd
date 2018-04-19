@@ -33,16 +33,52 @@ class Lexer {
 		reserve( Type.Float )
 
 		// Converte para uma lista, ex: [" ", "{", " ", "i", "n", "t", ""]
-		programInput = """
-		{
-			int i; int j; float v; float x; float[100] a;
-			while( true ) {
-				do i = i+1; while( a[i] < v);
-				do j = j-1; while( a[j] > v); if( i >= j ) break;
-				x = a[i]; a[i] = a[j]; a[j] = x;
-			}
-		}
-		""".map{ String($0) } 
+        let testCase = Int(String(Main.testCase))!
+        
+        switch testCase {
+        case 1:
+            programInput = """
+            {
+                int i; int j; float v; float x; float[100] a;
+                while( true ) {
+
+                    do i = i+1; while( a[i] < v);
+                    do j = j-1; while( a[j] > v);
+                    if( i >= j ) break;
+
+                    x = a[i]; a[i] = a[j]; a[j] = x;
+                }
+            }
+        """.map{ String($0) }
+        case 2:
+            programInput = """
+            {
+                int a; int b; int c;
+                a = 10;
+                if (a > 10) {
+                    b = a * c + 5;
+                } else if (a < 10) {
+                    b = a + c * c + a;
+                } else {
+                    b = a - c;
+                }
+            }
+        """.map{ String($0) }
+        case 3:
+            programInput = """
+            {
+                int[10] bar;
+                int foo;
+
+                foo = 0;
+                while ( foo < 10 ) {
+                    bar[foo] = foo * 2;
+                    foo = foo + 1;
+                }
+            }
+        """.map{ String($0) }
+        default: break
+        }
 
 	}
 
@@ -57,9 +93,8 @@ class Lexer {
 			throw Errors.eof
 		}
 		
-		print("lendo \(peek)")
 		peek = programInput.removeFirst()
-
+        print("\(peek)", terminator: "")
 	}
 
 	// Além de puxar o próximo char do buffer

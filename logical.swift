@@ -13,11 +13,11 @@ class Logical : Expr {
 		expr1 = x1
 		expr2 = x2
 
-		if let type = Logical.check(expr1.type, expr2.type) {
-			super.init(withToken:tok, type: type)
-		}else{
-			fatalError("type error!")
-		}
+		if let _ = Logical.check(expr1.type, expr2.type) {
+			super.init(withToken:tok, type: x1.type)
+        }else{
+			fatalError("logical type error!")
+        }
 
 	}
 
