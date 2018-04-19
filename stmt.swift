@@ -6,7 +6,7 @@ class Stmt : Node {
 	static let null = Stmt()
 
 	// Stmt mais acima, para break
-	static let Enclosing = Stmt.null
+	static var Enclosing = Stmt.null
 	
 	var after = 0
  	

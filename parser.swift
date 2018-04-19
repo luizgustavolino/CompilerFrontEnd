@@ -78,7 +78,7 @@ class Parser {
 
 			let p = try type()
 			guard let tok = look as? Word else{
-				fatalError("tok = look as? Word")
+				fatalError("look is not a word")
 			}
 
 			try match(Tag.ID)
@@ -129,7 +129,7 @@ class Parser {
 	func stmt() throws -> Stmt {
 		
 		let x:Expr?
-		let s:Stmt?
+		//let s:Stmt?
 		let s1:Stmt?
 		let s2:Stmt?
 		let savedStmt:Stmt?
@@ -157,6 +157,49 @@ class Parser {
 				try match(Tag.ELSE)
 				s2 = try stmt()
 				return try Else(x!, s1!, s2!)
+			
+			case (Tag.WHILE, _):
+
+				let whileNode = While()
+				savedStmt = Stmt.Enclosing
+				Stmt.Enclosing = whileNode
+
+				try match(Tag.WHILE)
+				try match("(")
+				x = try bool() 
+				try match(")")
+
+				s1 = try stmt()
+				try whileNode.set(x!, s1!)
+				Stmt.Enclosing = savedStmt!
+				return whileNode				
+
+			case (Tag.DO, _ ):
+
+				let doNode = Do()
+				savedStmt = Stmt.Enclosing
+				Stmt.Enclosing = doNode
+
+				try match(Tag.DO)
+				s1 = try stmt()
+				try match(Tag.WHILE)
+				try match("(")
+				x = try bool() 
+				try match(")")
+				try match(";")
+				try doNode.set(s1!, x!)
+
+				Stmt.Enclosing = savedStmt!
+				return doNode
+
+			case (Tag.BREAK, _ ):
+
+				try match(Tag.BREAK)
+				try match(";")
+				return Break()
+
+			case (_, "{"):
+				return try block()
 
 			default:
 				return Stmt.null
@@ -170,20 +213,21 @@ class Parser {
 
 		try match(Tag.ID)
 
-		guard let id = top.get(t) else{
-			error(t.toString() + " undeclared!")
+		guard let id = top?.get(t) else{
+			try error(t.toString() + " undeclared!")
+			fatalError()
 		}
 
 		if ahead("=") {
 			move()
-			stmt = Set(id, bool())
+			stmt = try Set(id, try bool())
 		}else{
-			let x = offset(id)
+			let x = try offset(id)
 			try match("=")
-			stmt = SetElem(x, try bool())
+			stmt = try SetElem(x, try bool())
 		}
 
-		match(";")
+		try match(";")
 		return stmt!
 	}
 
@@ -285,16 +329,91 @@ class Parser {
 	}
 
 	func factor() throws -> Expr{
-		let x:Expr? = nil
-		switch (look.tag, look.tag.stringFromUnicodeScalarCodePoint ) {
-			case "(":
+		
+		var x:Expr? = nil
+
+		switch (look!.tag, look!.tag.stringFromUnicodeScalarCodePoint ) {
+
+			case ( _ , "("):
 				move()
 				x = try bool()
 				try match(")")
-				return x
+				return x!
+
+			case (Tag.NUM, _):
+				x = Constant(withToken: look!, type: Type.Int)
+				move()
+				return x!
+
+			case (Tag.REAL, _):
+				x = Constant(withToken: look!, type: Type.Float)
+				move()
+				return x!
+				
+			case (Tag.TRUE, _):
+				x = Constant.True
+				move()
+				return x!
+
+			case (Tag.FALSE, _):
+				x = Constant.False
+				move()
+				return x!
+
+			case (Tag.ID, _):
+				
+				let id = top?.get(look!)
+				
+				if id == nil {
+					try error(look!.toString() + " undeclared")
+				}
+
+				move()
+
+				if !ahead("[") {
+					return id! 
+				} else {
+					return try offset(id!)
+				}
+
 			default:
-				return Expr.null
+				try error("syntax error")
+				fatalError()
 		}
+	}
+
+	func offset(_ a:Id) throws -> Access {
+		
+		var t2:Expr?
+		var loc:Expr?
+
+		guard let type = (a.type as? Arrayy)?.of else {
+			try error("sytax error")
+			fatalError()
+		}
+
+		try match("[")
+		var i = try bool()
+		try match("]")		
+
+		var w = Constant(type.width)
+		var t1 = Arith(withToken:Token(withASCII:"*"), i , w)
+
+		loc = t1
+
+		while ahead("[") {
+			
+			try match("[")
+			i = try bool()
+			try match("]")
+
+			w = Constant(type.width)
+			t1 = Arith(withToken:Token(withASCII:"*"), i , w)
+			t2 = Arith(withToken:Token(withASCII:"+"), loc! , t1)
+			loc = t2
+		}
+
+		return Access(withId:a, loc!, type)
 	}
 
 }
