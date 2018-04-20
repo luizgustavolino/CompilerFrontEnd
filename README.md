@@ -9,6 +9,15 @@ Execução
 
 ## Como rodar no Linux (testado no Ubuntu 16.0.4 LTS)
 
+ > Baixe o pacote do Swift no próprio site do [Swift.org], na extensão .tar.gz.
+ > Descompacte o arquivo baixado.
+ > Pegue o caminho absoluto do arquivo utilizando o comando **pwd**, e copie-o.
+ > Copie o comando **export PATH=/caminho/copiado/:$PATH**, onde **/caminho/copiado/** é o caminho que foi copiado no comando pwd.
+ > Vamos editar a lista de comandos executados na inicialização do terminal, executando o comando **nano .bashrc**.
+ > Ao final do arquivo, cole o comando **export** copiado no passo anterior.
+ > Reinicie o terminal.
+ > Teste com o comando **swift -version**.
+ > Execute **./run.sh** na pasta raiz do projeto do compilador.
  
 Programas 
 =====================
