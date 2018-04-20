@@ -1,4 +1,12 @@
-# README 
+README 
+=====================
+Compiladores, BCC - Senac
+Front-end completo em Swift
+
+- José Guilherme
+- Gabriel Lins
+- Luiz Gustavo
+
 
 Execução
 =====================
